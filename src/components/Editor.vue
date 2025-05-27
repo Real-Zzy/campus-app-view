@@ -9,6 +9,8 @@
 <script>
 import Vue from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+import { i18nChangeLanguage } from '@wangeditor/editor'
+i18nChangeLanguage('en')
 export default Vue.extend({
     components: { Editor, Toolbar },
     props: {
@@ -28,7 +30,8 @@ export default Vue.extend({
             content: '<p>创作内容</p>',
             toolbarConfig: {},
             editorConfig: {
-                placeholder: '请输入内容...',
+                placeholder: 'Add Description Here',
+                LANG: 'en',
                 MENU_CONF: {
                     uploadImage: {
                         server: '/api/food-share-sys/v1.0/file/upload',

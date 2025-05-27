@@ -26,7 +26,7 @@
                             <i class="el-icon-document"></i>
                         </div>
                         <div>
-                            订单
+                            Orders
                         </div>
                     </div>
                     <div style="text-align: center;" v-if="loginStatus" @click="handleRouteSelect('/message')">
@@ -34,7 +34,7 @@
                             <i class="el-icon-bell"></i>
                         </div>
                         <div>
-                            通知
+                            Notifications
                         </div>
                     </div>
                     <div style="text-align: center;" v-if="loginStatus" @click="handleRouteSelect('/post-product')">
@@ -42,7 +42,7 @@
                             <i class="el-icon-plus"></i>
                         </div>
                         <div>
-                            发布商品
+                            Post Item
                         </div>
                     </div>
                     <div v-if="!loginStatus" @click="loginOperation">
