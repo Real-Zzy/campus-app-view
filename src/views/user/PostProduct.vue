@@ -30,7 +30,7 @@
       <div>
         <p>Is Bargaining Supported?</p>
         <el-switch
-          v-model="product.isBargain"
+          v-model="product.bargain"
           active-text="Yes"
           inactive-text="No"
         >
@@ -138,7 +138,7 @@ export default {
         this.$notify.info({
           duration: 1000,
           title: "Posting Reminder",
-          message: "Please upload image for items",
+          message: "Please upload image(s)",
         });
         return;
       }
@@ -218,13 +218,31 @@ export default {
      * @param {*} file
      * @param {*} fileList
      */
-    handlePictureCardSuccess(file, fileList) {
-      this.coverList.push(file.data);
-      console.log(file, fileList);
+    handlePictureCardSuccess(response, file, fileList) {
+      this.coverList.push(response.data);
+      console.log("response:", response);
+      console.log("file:", file);
+      console.log("fileList", fileList);
+      console.log("coverList", this.coverList);
+      console.log("number of images:", fileList.length)
     },
+    // handleRemove(file, fileList) {
+    //   this.coverList = fileList;
+    //   console.log(file, fileList);
+    //   console.log(fileList.length)
+    // },
     handleRemove(file, fileList) {
-      this.coverList = fileList;
-      console.log(file, fileList);
+        // Update your internal list of image URLs or file references
+        // this.coverList = fileList.map(item => item.url || item.response?.data || item.data);
+        this.coverList = fileList.map(item => {
+            return (item.response && item.response.data) || item.url || item.data;
+        });
+
+
+        // Log debug info
+        console.log("Removed file:", file);
+        console.log("Updated fileList:", fileList);
+        console.log("Number of remaining images:", this.coverList.length);
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;

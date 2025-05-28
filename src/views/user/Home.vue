@@ -7,7 +7,7 @@
                         <Logo name="校园交易" />
                     </div>
                     <div class="route">
-                        <span @click="handleRouteSelect('/product')">商品</span>
+                        <span @click="handleRouteSelect('/product')">Items For Sale</span>
                         <span v-if="loginStatus" @click="handleRouteSelect('/myProduct')">我的商品</span>
                         <span v-if="loginStatus" @click="handleRouteSelect('/mySave')">我的收藏</span>
                         <span v-if="loginStatus" @click="handleRouteSelect('/myView')">足迹</span>
@@ -17,7 +17,7 @@
                     style="cursor: pointer;font-size: 14px;display: flex;justify-content: left;align-items: center;gap: 20px;color: rgb(143, 143, 143);">
                     <div class="word-search">
                         <div class="item">
-                            <input type="text" placeholder="搜索商品" v-model="key">
+                            <input type="text" placeholder="Search Item" v-model="key">
                             <i class="el-icon-search" @click="fetch"></i>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                     <div v-if="!loginStatus" @click="loginOperation">
-                        登录&nbsp;|&nbsp;注册
+                        Login&nbsp;|&nbsp;Sign Up
                     </div>
                     <div v-else>
                         <img @click="handleRouteSelect('/myself')" class="avatar" :src="userInfo.userAvatar">
@@ -72,7 +72,8 @@
                 </div>
             </div>
         </div>
-        <div style="padding: 10px 300px;">
+        <!-- <div style="padding: 10px 300px;"> -->
+        <div style="padding: 10px 10%;">
             <router-view></router-view>
         </div>
     </div>
