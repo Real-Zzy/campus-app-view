@@ -28,7 +28,7 @@
         />
       </div>
       <div>
-        <p>Is Bargaining Supported?</p>
+        <p>Discountable?</p>
         <el-switch
           v-model="product.bargain"
           active-text="Yes"
@@ -122,7 +122,7 @@ export default {
         this.$notify.info({
           duration: 1000,
           title: "Filling Reminder",
-          message: "Please fill set item name",
+          message: "Please set item name",
         });
         return;
       }

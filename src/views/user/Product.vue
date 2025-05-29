@@ -1,16 +1,7 @@
 <template>
     <div>
         <div class="nav-category">
-            <div class="left">
-                <span :style="{
-                    color: categorySelectedItem.name === isUseCategory.name ? 'rgb(248,248,248)' : '',
-                    backgroundColor: categorySelectedItem.name === isUseCategory.name ? 'rgb(255,209,80)' : ''
-                }" @click="categorySelected(isUseCategory)" :key="index"
-                    v-for="(isUseCategory, index) in isUseCategoryList">
-                    {{ isUseCategory.name }}
-                </span>
-            </div>
-            <div class="right">
+            <div class="top">
                 <span class="bargain">
                     <span :style="{
                         color: bargainSelectedItem.name === bargain.name ? 'rgb(248,248,248)' : '',
@@ -22,19 +13,29 @@
                     v-model="searchTime" type="daterange" range-separator="To" start-placeholder="Start Time"
                     end-placeholder="End Time">
                 </el-date-picker>
-                <el-select style="width: 100px;margin-right: 5px;" @change="fetchFreshData" size="small"
+                <!-- <el-select style="width: 100px;margin-right: 5px;" @change="fetchFreshData" size="small"
                     v-model="productQueryDto.categoryId" placeholder="Category">
                     <el-option v-for="item in categoryList" :key="item.id" :label="item.name" :value="item.id">
                     </el-option>
-                </el-select>
+                </el-select> -->
             </div>
+            <div class="bottom">
+                <span :style="{
+                    color: categorySelectedItem.name === isUseCategory.name ? 'rgb(248,248,248)' : '',
+                    backgroundColor: categorySelectedItem.name === isUseCategory.name ? 'rgb(255,209,80)' : ''
+                }" @click="categorySelected(isUseCategory)" :key="index"
+                    v-for="(isUseCategory, index) in isUseCategoryList">
+                    {{ isUseCategory.name }}
+                </span>
+            </div>
+            
         </div>
         <div class="product-list">
             <el-row v-if="productList.length === 0">
                 <el-empty description="No Items"></el-empty>
             </el-row>
             <el-row v-else>
-                <el-col :span="6" v-for="(product, index) in productList" :key="index">
+                <el-col @click.native="route(product)" :span="6" v-for="(product, index) in productList" :key="index">
                     <div class="item-product">
                         <div class="cover">
                             <img :src="coverListParse(product)" alt="" srcset="">
@@ -53,7 +54,7 @@
                             <span class="bargain-hover" id="no-bargain"></span>
                         </div>
                         <div style="padding-block: 5px;">
-                            <span class="decimel-symbol">¥</span>
+                            <span class="decimel-symbol">$</span>
                             <span class="price">{{ product.price }}</span>
                             <span class="love">4人想要</span>
                         </div>
@@ -90,6 +91,10 @@ export default {
         this.bargainSelected(this.bargainStatus[0]);
     },
     methods: {
+        route(product) {
+            // 跳转商品详情
+            this.$router.push('/product-detail?productId=' + product.id);
+        },
         coverListParse(product) {
             if (product.coverList === null) {
                 return;
@@ -153,7 +158,7 @@ export default {
                     this.categorySelected(this.isUseCategoryList[0]);
                 }
             }).catch(error => {
-                console.log("商品类别查询异常：", error);
+                console.log("Product Category Query Error：", error);
             })
         },
     }
@@ -270,22 +275,65 @@ export default {
 .nav-category {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    flex-wrap: wrap;
 
-    .left {
+    .bottom {
         display: flex;
         justify-content: left;
-        gap: 6px;
+        flex-wrap: wrap;
+        gap: 10px;
 
         span {
             display: inline-block;
             background-color: rgb(246, 246, 246);
-            padding: 6px 22px;
+            padding: 8px 18px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
             cursor: pointer;
-            border-radius: 15px;
+            border-radius: 16px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            text-align: center;
         }
 
         span:hover {
-            background-color: rgb(242, 242, 242);
+            background-color: #ebebeb;
+            // background-color: rgb(242, 242, 242);
+        }
+    }
+
+    .top {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .bargain {
+            display: flex;
+            gap: 6px;
+
+            span {
+                display: inline-block;
+                padding: 1px 16px;
+                font-size: 13px;
+                font-weight: 500;
+                border-radius: 16px;
+                background-color: #f6f6f6;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+
+            span:hover {
+                background-color: #ebebeb;
+            }
+        }
+
+        .el-date-picker,
+        .el-select {
+            font-size: 13px;
         }
     }
 }

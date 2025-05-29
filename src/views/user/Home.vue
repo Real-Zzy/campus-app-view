@@ -4,13 +4,13 @@
             <div class="top">
                 <div class="nav">
                     <div>
-                        <Logo name="校园交易" />
+                        <Logo name="Campus" />
                     </div>
                     <div class="route">
-                        <span @click="handleRouteSelect('/product')">Items For Sale</span>
-                        <span v-if="loginStatus" @click="handleRouteSelect('/myProduct')">我的商品</span>
-                        <span v-if="loginStatus" @click="handleRouteSelect('/mySave')">我的收藏</span>
-                        <span v-if="loginStatus" @click="handleRouteSelect('/myView')">足迹</span>
+                        <span @click="handleRouteSelect('/product')">Store</span>
+                        <span v-if="loginStatus" @click="handleRouteSelect('/myProduct')">My Items</span>
+                        <span v-if="loginStatus" @click="handleRouteSelect('/mySave')">Favorite</span>
+                        <span v-if="loginStatus" @click="handleRouteSelect('/myView')">History</span>
                     </div>
                 </div>
                 <div
@@ -67,7 +67,7 @@
                         收藏商品： 1
                     </div> -->
                     <div class="date">
-                        注册于： {{ userInfo.createTime }}
+                        Registration Date： {{ userInfo.createTime }}
                     </div>
                 </div>
             </div>

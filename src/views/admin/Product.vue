@@ -48,7 +48,7 @@
                 <el-table-column prop="isBargain" width="108" label="Discountable">
                     <template slot-scope="scope">
                       <div style="text-align: center;">
-                        <span>{{ scope.row.isBargain ? 'YES' : 'NO' }}</span>
+                        <span>{{ scope.row.bargain ? 'YES' : 'NO' }}</span>
                       </div>
                     </template>
                 </el-table-column>
