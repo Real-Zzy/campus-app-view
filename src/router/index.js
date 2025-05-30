@@ -67,5 +67,5 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
-import 'vue-vibe'
+// import 'vue-vibe'
 export default router;
