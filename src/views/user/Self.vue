@@ -3,7 +3,9 @@
         <!-- 头像 -->
         <div>
             <p>*头像</p>
-            <el-upload class="avatar-uploader" action="http://localhost:21090/api/campus-product-sys/v1.0/file/upload" :show-file-list="false"
+            <!-- <el-upload class="avatar-uploader" action="http://localhost:21090/api/campus-product-sys/v1.0/file/upload" :show-file-list="false"
+                :on-success="handleAvatarSuccess"> -->
+            <el-upload class="avatar-uploader" action="http://52.3.1.205:21090/api/campus-product-sys/v1.0/file/upload" :show-file-list="false"
                 :on-success="handleAvatarSuccess">
                 <img v-if="userAvatar" :src="userAvatar" style="width: 88px;height: 88px;">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
