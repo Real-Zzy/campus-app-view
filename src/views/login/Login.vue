@@ -9,7 +9,7 @@
             </div>
             <div class="right-login">
                 <div>
-                    <h2>校园二手交易平台</h2>
+                    <h2>校园二手交易平台*</h2>
                 </div>
                 <div class="text">
                     <input v-model="act" class="act" placeholder="输入账号" />
