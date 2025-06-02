@@ -25,12 +25,12 @@
         <div>
             <div>
                 <p>Images</p>
-                <!-- <el-upload action="http://localhost:21090/api/campus-product-sys/v1.0/file/upload"
-                    list-type="picture-card" :on-success="handlePictureCardSuccess" :file-list="coverList"
-                    :on-preview="handlePictureCardPreview" :on-remove="handleRemove"> -->
-                <el-upload action="http://52.3.1.205:21090/api/campus-product-sys/v1.0/file/upload"
+                <el-upload action="http://localhost:21090/api/campus-product-sys/v1.0/file/upload"
                     list-type="picture-card" :on-success="handlePictureCardSuccess" :file-list="coverList"
                     :on-preview="handlePictureCardPreview" :on-remove="handleRemove">
+                <!-- <el-upload action="http://52.3.1.205:21090/api/campus-product-sys/v1.0/file/upload"
+                    list-type="picture-card" :on-success="handlePictureCardSuccess" :file-list="coverList"
+                    :on-preview="handlePictureCardPreview" :on-remove="handleRemove"> -->
                     <i class="el-icon-plus"></i>
                 </el-upload>
                 <el-dialog :visible.sync="dialogVisible">
