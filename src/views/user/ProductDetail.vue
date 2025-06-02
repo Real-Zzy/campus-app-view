@@ -47,7 +47,7 @@
             </div>
             <div class="operation">
                 <div class="left">
-                    <span><i class="el-icon-sell" style="margin-right: 5px;"></i>Add To Wishlist</span>
+                    <span @click="likeProduct"><i class="el-icon-sell" style="margin-right: 5px;"></i>Notify Seller</span>
                     <span>Order</span>
                 </div>
                 <div class="right">
@@ -78,6 +78,28 @@ export default {
         this.clearBanner(); // 清除定时器
     },
     methods: {
+        likeProduct(){
+            this.$axios.post(`/interaction/likeProduct/${this.product.id}`).then(res => {
+                const { data } = res; // 解构
+                if (data.code === 200) {
+                    this.$notify({
+                        duration: 1000,
+                        title: 'Notification Sending Operation',
+                        message: data.msg,
+                        type: 'success'
+                    });
+                }else{
+                    this.$notify({
+                        duration: 2000,
+                        title: 'Notification Sending Operation',
+                        message: data.msg,
+                        type: 'info'
+                    });
+                }
+            }).catch(error => {
+                console.log("item wanted-notification error：", error);
+            })
+        },
         querySaveStatus() {
             // 判断用户是否已经登录
             const userInfo = getUserInfo();
