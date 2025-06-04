@@ -48,13 +48,60 @@
             <div class="operation">
                 <div class="left">
                     <span @click="likeProduct"><i class="el-icon-sell" style="margin-right: 5px;"></i>Notify Seller</span>
-                    <span>Order</span>
+                    <span @click="buyProduct">Order</span>
                 </div>
                 <div class="right">
                     <span @click="saveOperation"><i style="margin-right: 5px;" class="el-icon-star-off"></i>{{ saveFlag ? 'Remove From Favorite' : 'Add To Favorite' }}</span>
                 </div>
             </div>
         </div>
+        <el-dialog :show-close="false" :visible.sync="dialogProductOperaion" width="35%">
+            <div style="padding:16px 20px;">
+                <p>Order</p>
+                <div class="info">
+                    <div class="decimal">
+                        <span class="price"><span class="symbol">￥</span>{{ product.price }}</span>
+                        <span style="border: 2px solid rgb(214, 214, 214);border-radius: 50%;"></span>
+                        <span>{{ product.categoryName }}</span>
+                        <span style="border: 2px solid rgb(214, 214, 214);border-radius: 50%;"></span>
+                        <img :src="product.userAvatar" style="width: 20px;height: 20px;border-radius: 50%;" alt=""
+                            srcset="">
+                        <span>{{ product.userName }}</span>
+                        <!-- <span class="bargain">{{ product.isBargain ? '可砍价' : '不支持砍价' }}</span> -->
+                        <div v-if="product.bargain">
+                            <span class="bargain">Discountable</span>
+                        </div>
+                    </div>
+                    <div class="decimal">
+                        <!-- <span>{{ product.oldLevel }}成新</span> -->
+                        <span>{{ 10 - product.oldLevel }}0% Used</span>
+                        <span style="border: 2px solid rgb(214, 214, 214);border-radius: 50%;"></span>
+                        <span>Quantity&nbsp;{{ product.inventory }}</span>
+                    </div>
+                    <div class="name">
+                        {{ product.name }}
+                    </div>
+                </div>
+                <div>
+                    <p>Order Quantity</p>
+                    <el-input-number v-model="buyNumber" :min="1" :max="product.inventory"
+                        label="Set Quantity"></el-input-number>
+                </div>
+                <div>
+                    <p>Notes</p>
+                    <el-input type="textarea" :rows="3" placeholder="add notes" v-model="detail">
+                    </el-input>
+                </div>
+            </div>
+            <span slot="footer" class="dialog-footer" style="margin-top: 10px;">
+                <span class="channel-button" @click="cannelBuy()">
+                    取消下单
+                </span>
+                <span class="edit-button" @click="buyConfirm()">
+                    确定下单
+                </span>
+            </span>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -69,6 +116,9 @@ export default {
             coverItem: null,
             keyInterval: null,
             saveFlag: false, // whether added to favorite or not
+            dialogProductOperaion: false,
+            buyNumber: 1,
+            detail: ''
         }
     },
     created() {
@@ -78,6 +128,51 @@ export default {
         this.clearBanner(); // 清除定时器
     },
     methods: {
+        /**
+         * 商品下单
+         */
+        buyConfirm() {
+            const ordersDTO = {
+                productId: this.product.id,
+                buyNumber: this.buyNumber,
+                detail: this.detail
+            }
+            this.$axios.post(`/product/buyProduct`, ordersDTO).then(res => {
+                const { data } = res; // 解构
+                if (data.code === 200) {
+                    this.$notify({
+                        duration: 1000,
+                        title: 'Order Operation',
+                        message: data.msg,
+                        type: 'success'
+                    });
+                    this.fetchProduct(this.product.id);
+                    this.cannelBuy();
+                } else {
+                    this.$notify({
+                        duration: 2000,
+                        title: 'Order Operation',
+                        message: data.msg,
+                        type: 'error'
+                    });
+                }
+            }).catch(error => {
+                this.$notify({
+                    duration: 2000,
+                    title: 'Order Operation',
+                    message: error,
+                    type: 'error'
+                });
+                console.log("商品下单异常：", error);
+            })
+        },
+        cannelBuy() {
+            this.dialogProductOperaion = false;
+            this.buyNumber = 1;
+        },
+        buyProduct() {
+            this.dialogProductOperaion = true;
+        },
         likeProduct(){
             this.$axios.post(`/interaction/likeProduct/${this.product.id}`).then(res => {
                 const { data } = res; // 解构
