@@ -228,7 +228,7 @@ export default {
                     this.saveFlag = data.data;
                     this.$notify({
                         duration: 1000,
-                        title: 'add to favorite success',
+                        title: 'Favorite Operation',
                         message: data.msg,
                         type: 'success'
                     });
