@@ -23,6 +23,7 @@
         <p>Price</p>
         <input
           class="dialog-input"
+          type="number"
           v-model="product.price"
           placeholder="price"
         />
