@@ -10,7 +10,7 @@
                         <span @click="handleRouteSelect('/product')">Store</span>
                         <span v-if="loginStatus" @click="handleRouteSelect('/myProduct')">My Items</span>
                         <span v-if="loginStatus" @click="handleRouteSelect('/mySave')">Favorite</span>
-                        <span v-if="loginStatus" @click="handleRouteSelect('/myView')">History</span>
+                        <span v-if="loginStatus" @click="handleRouteSelect('/myView')">History View</span>
                     </div>
                 </div>
                 <div

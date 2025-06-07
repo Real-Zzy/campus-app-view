@@ -105,6 +105,7 @@
     </div>
 </template>
 <script>
+import { getUserInfo } from "@/utils/storage"
 export default {
     name: 'ProductDetail',
     data() {
@@ -123,11 +124,29 @@ export default {
     },
     created() {
         this.getParam();
+        this.viewOperation();
     },
     beforeDestroy() {
         this.clearBanner(); // 清除定时器
     },
     methods: {
+        // 浏览操作
+        viewOperation() {
+            const userInfo = getUserInfo();
+            if (userInfo === null) { // 没登录不用记录
+                return;
+            }
+            this.userInfo = userInfo;
+            // 对于用户这是无感的
+            this.$axios.post(`/interaction/view/${this.productId}`).then(res => {
+                const { data } = res; // 解构
+                if (data.code === 200) {
+                    console.log("用户浏览已经处理");
+                }
+            }).catch(error => {
+                console.log("浏览记录异常：", error);
+            })
+        },
         /**
          * 商品下单
          */
