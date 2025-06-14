@@ -24,6 +24,8 @@ const routes = [
       { path: "/evaluations", name: 'Comment Management', icon: 'el-icon-chat-dot-round', component: () => import(`@/views/admin/Evaluations.vue`), meta: { requireAuth: true } },
       { path: "/ordersManage", name: 'Order Management', icon: 'el-icon-document-copy', component: () => import(`@/views/admin/Orders.vue`), meta: { requireAuth: true } },
       { path: "/interactionManage", name: 'Interaction Management', icon: 'el-icon-connection', component: () => import(`@/views/admin/Interaction.vue`), meta: { requireAuth: true } },
+      { path: "/operationLogManage", name: 'Operation Log Management', icon: 'el-icon-connection', component: () => import(`@/views/admin/OperationLog.vue`), meta: { requireAuth: true } },
+      // { path: "/product-detail", name: 'Item Detail', icon: 'el-icon-chat-dot-round', component: () => import(`@/views/admin/ProductDetail.vue`), meta: { requireAuth: true } },
     ]
   },
   {

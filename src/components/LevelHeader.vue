@@ -8,7 +8,7 @@
         </span>
         <span>
             <span class="operation-span-tag">
-                后台&nbsp;&nbsp;/&nbsp;&nbsp;{{ tag == '' ? '元数据' : tag }}
+                Background&nbsp;&nbsp;/&nbsp;&nbsp;{{ tag == '' ? '元数据' : tag }}
             </span>
         </span>
         <span class="user-block">
