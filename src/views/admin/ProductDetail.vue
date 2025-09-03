@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div class="decimal">
-                <span class="love">{{ product.likeNumber }}人想要</span>
+                <!-- <span class="love">{{ product.likeNumber }}人想要</span> -->
                 <span style="border: 2px solid rgb(214, 214, 214);border-radius: 50%;"></span>
                 <span class="love">{{ product.saveNumber }}人收藏</span>
                 <span style="border: 2px solid rgb(214, 214, 214);border-radius: 50%;"></span>
