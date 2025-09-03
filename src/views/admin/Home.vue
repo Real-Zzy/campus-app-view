@@ -217,7 +217,7 @@ export default {
 
 
     .menu-side {
-        width: 253px;
+        width: 273px;
         min-width: 95px;
         height: 100vh;
         padding-top: 10px;

@@ -12,13 +12,13 @@
                 {{ tagItem }}
             </span>
         </div>
-        <div v-if="tagSelected === '修改资料'">
+        <div v-if="tagSelected === 'Edit Profile'">
             <Self />
         </div>
-        <div v-else-if="tagSelected === '修改密码'">
+        <div v-else-if="tagSelected === 'Change Password'">
             <ResetPwd />
         </div>
-        <div v-else-if="tagSelected === '退出登录'">
+        <div v-else-if="tagSelected === 'Log Out'">
             <el-result icon="warning" title="退出" subTitle="退出后将重新登录">
                 <template slot="extra">
                     <span class="loginout" @click="loginout">我确定</span>
@@ -35,9 +35,9 @@ export default {
     components: { ResetPwd, Self },
     data() {
         return {
-            tags: ['修改资料', '修改密码', '退出登录'],
+            tags: ['Edit Profile', 'Change Password', 'Log Out'],
             tagSelected: '',
-            defaultPath: '修改资料',
+            defaultPath: 'Edit Profile',
         };
     },
     created() {
@@ -46,6 +46,7 @@ export default {
     methods: {
         loginout() {
             sessionStorage.setItem('token', null);
+            sessionStorage.setItem('userInfo', null);
             this.$router.push('/login');
         },
         condition(tag) {

@@ -17,11 +17,15 @@ const routes = [
     component: () => import(`@/views/admin/Home.vue`),
     meta: { requireAuth: true },
     children: [
-      { path: "/adminLayout", name: '仪表盘', icon: 'el-icon-pie-chart', component: () => import(`@/views/admin/Main.vue`), meta: { requireAuth: true } },
-      { path: "/userManage", name: '用户管理', icon: 'el-icon-user-solid', component: () => import(`@/views/admin/User.vue`), meta: { requireAuth: true } },
+      { path: "/adminLayout", name: 'Dashboard', icon: 'el-icon-pie-chart', component: () => import(`@/views/admin/Main.vue`), meta: { requireAuth: true } },
+      { path: "/userManage", name: 'User Management', icon: 'el-icon-user-solid', component: () => import(`@/views/admin/User.vue`), meta: { requireAuth: true } },
       { path: "/productManage", name: 'Item Management', icon: 'el-icon-shopping-bag-1', component: () => import(`@/views/admin/Product.vue`), meta: { requireAuth: true } },
       { path: "/categoryManage", name: 'Category Management', icon: 'el-icon-document-checked', component: () => import(`@/views/admin/Category.vue`), meta: { requireAuth: true } },
-      { path: "/evaluations", name: '评论管理', icon: 'el-icon-chat-dot-round', component: () => import(`@/views/admin/Evaluations.vue`), meta: { requireAuth: true } },
+      // { path: "/evaluations", name: 'Comment Management', icon: 'el-icon-chat-dot-round', component: () => import(`@/views/admin/Evaluations.vue`), meta: { requireAuth: true } },
+      { path: "/ordersManage", name: 'Order Management', icon: 'el-icon-document-copy', component: () => import(`@/views/admin/Orders.vue`), meta: { requireAuth: true } },
+      { path: "/interactionManage", name: 'Interaction Management', icon: 'el-icon-connection', component: () => import(`@/views/admin/Interaction.vue`), meta: { requireAuth: true } },
+      { path: "/operationLogManage", name: 'Operation Log Management', icon: 'el-icon-connection', component: () => import(`@/views/admin/OperationLog.vue`), meta: { requireAuth: true } },
+      // { path: "/product-detail", name: 'Item Detail', icon: 'el-icon-chat-dot-round', component: () => import(`@/views/admin/ProductDetail.vue`), meta: { requireAuth: true } },
     ]
   },
   {

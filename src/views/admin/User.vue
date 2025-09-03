@@ -3,20 +3,20 @@
         <el-row style="padding: 10px;margin-left: 5px;">
             <el-row>
                 <el-select style="width: 100px;margin-right: 5px;" @change="fetchFreshData" size="small"
-                    v-model="userQueryDto.isLogin" placeholder="登录状态">
+                    v-model="userQueryDto.isLogin" placeholder="Status">
                     <el-option v-for="item in loginStatuList" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
                 </el-select>
-                <el-select style="width: 100px;margin-right: 5px;" @change="fetchFreshData" size="small"
+                <!-- <el-select style="width: 100px;margin-right: 5px;" @change="fetchFreshData" size="small"
                     v-model="userQueryDto.isWord" placeholder="禁言状态">
                     <el-option v-for="item in wordStatuList" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
-                </el-select>
+                </el-select> -->
                 <el-date-picker style="width: 216px;margin-right: 5px;" @change="fetchFreshData" size="small"
-                    v-model="searchTime" type="daterange" range-separator="至" start-placeholder="注册开始"
-                    end-placeholder="注册结束">
+                    v-model="searchTime" type="daterange" range-separator="To" start-placeholder="Start"
+                    end-placeholder="End">
                 </el-date-picker>
-                <el-input size="small" style="width: 166px;" v-model="userQueryDto.userName" placeholder="用户名" clearable
+                <el-input size="small" style="width: 166px;" v-model="userQueryDto.userName" placeholder="Username" clearable
                     @clear="handleFilterClear">
                     <el-button slot="append" @click="handleFilter" icon="el-icon-search"></el-button>
                 </el-input>
@@ -27,31 +27,31 @@
         </el-row>
         <el-row style="margin: 0 22px;border-top: 1px solid rgb(245,245,245);">
             <el-table :stripe="true" :data="tableData" style="width: 100%">
-                <el-table-column prop="userAvatar" width="68" label="头像">
+                <el-table-column prop="userAvatar" width="68" label="Avatar">
                     <template slot-scope="scope">
                         <el-avatar :size="25" :src="scope.row.userAvatar" style="margin-top: 10px;"></el-avatar>
                     </template>
                 </el-table-column>
-                <el-table-column prop="userName" label="名称"></el-table-column>
-                <el-table-column prop="userAccount" width="128" label="账号"></el-table-column>
-                <el-table-column prop="userEmail" width="168" label="邮箱"></el-table-column>
-                <el-table-column prop="userRole" width="68" label="角色">
+                <el-table-column prop="userName" label="Name"></el-table-column>
+                <el-table-column prop="userAccount" width="128" label="Username"></el-table-column>
+                <el-table-column prop="userEmail" width="168" label="Email"></el-table-column>
+                <el-table-column prop="userRole" width="68" label="Role">
                     <template slot-scope="scope">
-                        <span>{{ scope.row.userRole === 1 ? '管理员' : '用户' }}</span>
+                        <span>{{ scope.row.userRole === 1 ? 'Admin' : 'User' }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="isLogin" width="108" label="封号">
+                <el-table-column prop="isLogin" width="108" label="Status">
                     <template slot-scope="scope">
                         <i v-if="scope.row.isLogin" style="margin-right: 5px;" class="el-icon-warning"></i>
                         <i v-else style="margin-right: 5px;color: rgb(253, 199, 50);" class="el-icon-success"></i>
                         <el-tooltip v-if="scope.row.isLogin" class="item" effect="dark"
-                            content="账号一经封号，不可登录系统。经由管理员解禁后，方可登录" placement="bottom-end">
-                            <span style="text-decoration: underline;text-decoration-style: dashed;">已封号</span>
+                            content="Once the account is blocked, you cannot log in to the system. You can log in only after the administrator has lifted the ban." placement="bottom-end">
+                            <span style="text-decoration: underline;text-decoration-style: dashed;">Blocked</span>
                         </el-tooltip>
-                        <span v-else>正常</span>
+                        <span v-else>Active</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="isWord" width="108" label="禁言">
+                <!-- <el-table-column prop="isWord" width="108" label="禁言">
                     <template slot-scope="scope">
                         <i v-if="scope.row.isWord" style="margin-right: 5px;" class="el-icon-warning"></i>
                         <i v-else style="margin-right: 5px;color: rgb(253, 199, 50);" class="el-icon-success"></i>
@@ -61,13 +61,13 @@
                         </el-tooltip>
                         <span v-else>正常</span>
                     </template>
-                </el-table-column>
-                <el-table-column :sortable="true" prop="createTime" width="168" label="注册于"></el-table-column>
-                <el-table-column label="操作" width="170">
+                </el-table-column> -->
+                <el-table-column :sortable="true" prop="createTime" width="168" label="Registration"></el-table-column>
+                <el-table-column label="Action" width="170">
                     <template slot-scope="scope">
-                        <span class="text-button" @click="handleStatus(scope.row)">账号状态</span>
-                        <span class="text-button" @click="handleEdit(scope.row)">编辑</span>
-                        <span class="text-button" @click="handleDelete(scope.row)">删除</span>
+                        <span class="text-button" @click="handleStatus(scope.row)">Status</span>
+                        <span class="text-button" @click="handleEdit(scope.row)">Edit</span>
+                        <span class="text-button" @click="handleDelete(scope.row)">Delete</span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -80,13 +80,13 @@
         <el-dialog :show-close="false" :visible.sync="dialogUserOperaion" width="25%">
             <div style="padding:16px 20px;">
                 <el-row>
-                    <p>用户头像</p>
-                    <!-- <el-upload class="avatar-uploader"
-                        action="http://localhost:21090/api/campus-product-sys/v1.0/file/upload" :show-file-list="false"
-                        :on-success="handleAvatarSuccess"> -->
+                    <p>Avatar</p>
                     <el-upload class="avatar-uploader"
-                        action="http://52.3.1.205:21090/api/campus-product-sys/v1.0/file/upload" :show-file-list="false"
+                        action="http://localhost:21090/api/campus-product-sys/v1.0/file/upload" :show-file-list="false"
                         :on-success="handleAvatarSuccess">
+                    <!-- <el-upload class="avatar-uploader"
+                        action="http://52.3.1.205:21090/api/campus-product-sys/v1.0/file/upload" :show-file-list="false"
+                        :on-success="handleAvatarSuccess"> -->
                         <img v-if="userAvatar" :src="userAvatar" class="dialog-avatar">
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
@@ -164,9 +164,9 @@ export default {
             selectedRows: [],
             status: null,
             userQueryDto: {}, // 搜索条件
-            loginStatuList: [{ value: null, label: '全部' }, { value: 0, label: '正常' }, { value: 1, label: '封号' }],
+            loginStatuList: [{ value: null, label: 'All' }, { value: 0, label: 'Active' }, { value: 1, label: 'Blocked' }],
             wordStatuList: [{ value: null, label: '全部' }, { value: 0, label: '正常' }, { value: 1, label: '禁言' }],
-            rolesList: [{ value: null, label: '全部' }, { value: 2, label: '用户' }, { value: 1, label: '管理员' }]
+            rolesList: [{ value: null, label: 'All' }, { value: 2, label: 'User' }, { value: 1, label: 'Admin' }]
         };
     },
     created() {

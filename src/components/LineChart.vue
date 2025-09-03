@@ -3,8 +3,8 @@
     <div>
       <span class="tag">{{ tag }}</span>
       <span class="time-show">
-        <span class="top-bar" style="font-size: 12px;">时间选择</span>
-        <el-select size="mini" style="width: 90px;" v-model="selectedValue" placeholder="期限">
+        <span class="top-bar" style="font-size: 12px;">Time Period</span>
+        <el-select size="mini" style="width: 90px;" v-model="selectedValue" placeholder="period">
           <el-option v-for="item in options" :key="item.num" :label="item.name" :value="item.num">
           </el-option>
         </el-select>

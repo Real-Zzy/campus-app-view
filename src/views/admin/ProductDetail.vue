@@ -21,23 +21,27 @@
         </div>
         <div class="info">
             <div class="decimal">
-                <span class="price"><span class="symbol">$</span>{{ product.price }}</span>
+                <span class="price"><span class="symbol">￥</span>{{ product.price }}</span>
                 <span style="border: 2px solid rgb(214, 214, 214);border-radius: 50%;"></span>
                 <span>{{ product.categoryName }}</span>
                 <span style="border: 2px solid rgb(214, 214, 214);border-radius: 50%;"></span>
                 <img :src="product.userAvatar" style="width: 20px;height: 20px;border-radius: 50%;" alt="" srcset="">
                 <span>{{ product.userName }}</span>
-                <!-- <span class="bargain">{{ product.bargain ? 'Discountable' : 'Undiscountable' }}</span> -->
+                <!-- <span class="bargain">{{ product.isBargain ? '可砍价' : '不支持砍价' }}</span> -->
                 <div v-if="product.bargain">
                     <span class="bargain">Discountable</span>
                 </div>
-                
             </div>
             <div class="decimal">
-                <!-- <span>{{ product.oldLevel }}成新</span> -->
-                <span>{{ 10 - product.oldLevel }}0% Used</span>
+                <!-- <span class="love">{{ product.likeNumber }}人想要</span> -->
                 <span style="border: 2px solid rgb(214, 214, 214);border-radius: 50%;"></span>
-                <span>Quantity&nbsp;{{ product.inventory }}</span>
+                <span class="love">{{ product.saveNumber }}人收藏</span>
+                <span style="border: 2px solid rgb(214, 214, 214);border-radius: 50%;"></span>
+                <span class="love">{{ product.viewNumber }}人浏览</span>
+                <span style="border: 2px solid rgb(214, 214, 214);border-radius: 50%;"></span>
+                <span>{{ product.oldLevel }}成新</span>
+                <span style="border: 2px solid rgb(214, 214, 214);border-radius: 50%;"></span>
+                <span>库存&nbsp;{{ product.inventory }}（件/盒/箱..）</span>
             </div>
             <div class="name">
                 {{ product.name }}
@@ -47,17 +51,21 @@
             </div>
             <div class="operation">
                 <div class="left">
-                    <span @click="likeProduct"><i class="el-icon-sell" style="margin-right: 5px;"></i>Notify Seller</span>
-                    <span @click="buyProduct">Order</span>
+                    <span @click="likeProduct"><i class="el-icon-sell" style="margin-right: 5px;"></i>我想要</span>
+                    <span @click="buyProduct">立即购买</span>
                 </div>
                 <div class="right">
-                    <span @click="saveOperation"><i style="margin-right: 5px;" class="el-icon-star-off"></i>{{ saveFlag ? 'Remove From Favorite' : 'Add To Favorite' }}</span>
+                    <span @click="saveOperation"><i style="margin-right: 5px;" class="el-icon-star-off"></i>{{ saveFlag
+                        ? '取消收藏' : '收藏' }}</span>
                 </div>
+            </div>
+            <div v-if="userInfo !== null">
+                <Evaluations contentType="PRODUCT" :contentId="product.id" />
             </div>
         </div>
         <el-dialog :show-close="false" :visible.sync="dialogProductOperaion" width="35%">
             <div style="padding:16px 20px;">
-                <p>Order</p>
+                <p>商品下单</p>
                 <div class="info">
                     <div class="decimal">
                         <span class="price"><span class="symbol">￥</span>{{ product.price }}</span>
@@ -73,23 +81,23 @@
                         </div>
                     </div>
                     <div class="decimal">
-                        <!-- <span>{{ product.oldLevel }}成新</span> -->
-                        <span>{{ 10 - product.oldLevel }}0% Used</span>
                         <span style="border: 2px solid rgb(214, 214, 214);border-radius: 50%;"></span>
-                        <span>Quantity&nbsp;{{ product.inventory }}</span>
+                        <span>{{ product.oldLevel }}成新</span>
+                        <span style="border: 2px solid rgb(214, 214, 214);border-radius: 50%;"></span>
+                        <span>库存&nbsp;{{ product.inventory }}（件/盒/箱..）</span>
                     </div>
                     <div class="name">
                         {{ product.name }}
                     </div>
                 </div>
                 <div>
-                    <p>Order Quantity</p>
+                    <p>下单数量</p>
                     <el-input-number v-model="buyNumber" :min="1" :max="product.inventory"
-                        label="Set Quantity"></el-input-number>
+                        label="请选择"></el-input-number>
                 </div>
                 <div>
-                    <p>Notes</p>
-                    <el-input type="textarea" :rows="3" placeholder="add notes" v-model="detail">
+                    <p>备注信息</p>
+                    <el-input type="textarea" :rows="3" placeholder="补充备注" v-model="detail">
                     </el-input>
                 </div>
             </div>
@@ -106,7 +114,9 @@
 </template>
 <script>
 import { getUserInfo } from "@/utils/storage"
+import Evaluations from "@/components/Evaluations"
 export default {
+    components: { Evaluations },
     name: 'ProductDetail',
     data() {
         return {
@@ -116,10 +126,11 @@ export default {
             coverIndex: 0,
             coverItem: null,
             keyInterval: null,
-            saveFlag: false, // whether added to favorite or not
+            saveFlag: false, // 判断用户是否已经收藏
             dialogProductOperaion: false,
             buyNumber: 1,
-            detail: ''
+            detail: '',
+            userInfo: null
         }
     },
     created() {
@@ -161,7 +172,7 @@ export default {
                 if (data.code === 200) {
                     this.$notify({
                         duration: 1000,
-                        title: 'Order Operation',
+                        title: '下单操作',
                         message: data.msg,
                         type: 'success'
                     });
@@ -170,7 +181,7 @@ export default {
                 } else {
                     this.$notify({
                         duration: 2000,
-                        title: 'Order Operation',
+                        title: '下单操作',
                         message: data.msg,
                         type: 'error'
                     });
@@ -178,7 +189,7 @@ export default {
             }).catch(error => {
                 this.$notify({
                     duration: 2000,
-                    title: 'Order Operation',
+                    title: '下单操作',
                     message: error,
                     type: 'error'
                 });
@@ -192,33 +203,33 @@ export default {
         buyProduct() {
             this.dialogProductOperaion = true;
         },
-        likeProduct(){
+        likeProduct() {
             this.$axios.post(`/interaction/likeProduct/${this.product.id}`).then(res => {
                 const { data } = res; // 解构
                 if (data.code === 200) {
                     this.$notify({
                         duration: 1000,
-                        title: 'Notification Sending Operation',
+                        title: '想要操作通知',
                         message: data.msg,
                         type: 'success'
                     });
-                }else{
+                } else {
                     this.$notify({
                         duration: 2000,
-                        title: 'Notification Sending Operation',
+                        title: '想要操作通知',
                         message: data.msg,
                         type: 'info'
                     });
                 }
             }).catch(error => {
-                console.log("item wanted-notification error：", error);
+                console.log("商品---想要---异常：", error);
             })
         },
         querySaveStatus() {
             // 判断用户是否已经登录
             const userInfo = getUserInfo();
             if (userInfo === null) { // 没登录不用查
-                console.log("user not logged in");
+                console.log("用户没登录");
                 return;
             }
             const interactionQueryDto = {
@@ -233,7 +244,7 @@ export default {
                     this.saveFlag = data.total !== 0;
                 }
             }).catch(error => {
-                console.log("item query error：", error);
+                console.log("商品查询异常：", error);
             })
         },
         /**
@@ -247,13 +258,13 @@ export default {
                     this.saveFlag = data.data;
                     this.$notify({
                         duration: 1000,
-                        title: 'Favorite Operation',
+                        title: '收藏操作成功',
                         message: data.msg,
                         type: 'success'
                     });
                 }
             }).catch(error => {
-                console.log("item query error：", error);
+                console.log("商品查询异常：", error);
             })
         },
         clearBanner() {
@@ -316,15 +327,21 @@ export default {
                 if (data.code === 200) {
                     this.product = data.data[0];
                     this.coverListParse(this.product);
+                    this.querySaveStatus();
                 }
             }).catch(error => {
-                console.log("item query error：", error);
+                console.log("商品查询异常：", error);
             })
         },
     }
 };
 </script>
 <style scoped lang="scss">
+.love {
+    font-size: 14px;
+    color: #999;
+}
+
 .info {
     width: 500px;
 
@@ -335,17 +352,18 @@ export default {
         font-size: 14px;
         cursor: pointer;
 
-        .right{
-            span:hover{
-                background-color: rgb(241,241,241);    
+        .right {
+            span:hover {
+                background-color: rgb(241, 241, 241);
             }
+
             span {
                 display: inline-block;
-                width: 168px;
+                width: 100px;
                 text-align: center;
-                background-color: rgb(246,246,246);
+                background-color: rgb(246, 246, 246);
                 border-radius: 20px;
-                
+
             }
         }
 
@@ -367,7 +385,7 @@ export default {
 
             span:last-child {
                 background-color: rgb(59, 59, 59);
-                color: rgb(245,245,245);
+                color: rgb(245, 245, 245);
                 border-top-right-radius: 20px;
                 border-bottom-right-radius: 20px;
             }
@@ -390,6 +408,7 @@ export default {
         gap: 10px;
         font-size: 14px;
         margin-block: 6px;
+        width: 500px;
 
         .price {
             .symbol {
@@ -425,8 +444,7 @@ export default {
             margin: 10px;
             display: flex;
             justify-content: left;
-            align-items: center;
-            gap: 40px;
+            gap: 10px;
 
             i:hover {
                 background-color: rgb(246, 246, 246);
@@ -442,10 +460,8 @@ export default {
             }
 
             img {
-                // width: 280px;
-                // height: 280px;
                 width: 280px;
-                max-height: 280px;
+                height: 280px;
                 object-fit: contain;
             }
         }
@@ -464,6 +480,7 @@ export default {
             img {
                 width: 80px;
                 height: 80px;
+                object-fit: contain;
             }
         }
     }
